@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface PersonRepository extends JpaRepository<Person, Long> {
     @Query("SELECT p from Person p where p.email = :login or p.phone = :login")
     Optional<Person> findByPhoneOrEmail(@Param("login") String login);
+    Optional<Person> findByPhoneOrEmail(String phone, String email);
 }
