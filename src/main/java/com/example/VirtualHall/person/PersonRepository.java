@@ -9,8 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
-    @Query("SELECT p from Person p where p.email = :login or p.phone = :login")
-    Optional<Person> findByPhoneOrEmail(@Param("login") String login);
-
+    Optional<Person> findByEmail(String email);
+    Optional<Person> findByPhone(String phone);
     Optional<Person> findByPhoneOrEmail(String phone, String email);
 }

@@ -42,10 +42,6 @@ public class Person {
 
     @Column(name = "phone", nullable = false, unique = true)
     @NotBlank(message = "Телефон не может быть пустым")
-    @Pattern(
-            regexp = "^(\\+7|8)[\\s-]?\\(?\\d{3}\\)?[\\s-]?\\d{3}[\\s-]?\\d{2}[\\s-]?\\d{2}$",
-            message = "Введите корректный российский номер телефона (например: +7(123)456-78-90, 8(123)4567890, +7 123 456 78 90)"
-    )
     private String phone;
 
     @Column(name="email", nullable = false, unique = true)
