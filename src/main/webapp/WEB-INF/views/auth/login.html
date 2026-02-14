@@ -11,36 +11,25 @@
         <p style="color: red;">Неверный email/телефон или пароль</p>
     </div>
 
-    <form th:action="@{/process-login}" th:method="POST">
+    <div th:if="${param.registered}">
+        <p style="color: green;">Регистрация прошла успешно! Войдите в систему.</p>
+    </div>
+
+    <form th:action="@{/process-login}" method="post">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
         <p>
-            <label>
-                <input type="radio" name="loginType" value="email" checked onclick="toggleLoginField()">
-                Войти по email
-            </label>
-            <br>
-            <label>
-                <input type="radio" name="loginType" value="phone" onclick="toggleLoginField()">
-                Войти по телефону
-            </label>
-        </p>
-
-        <p id="emailField">
-            <label for="email">Email:</label><br>
-            <input type="text" id="email" name="email"
-                   placeholder="example@mail.ru">
-        </p>
-
-        <p id="phoneField" style="display: none;">
-            <label for="phone">Телефон:</label><br>
-            <input type="text" id="phone" name="phone"
-                   placeholder="+7(123)456-78-90">
+            <label for="username">Email или телефон:</label><br>
+            <input type="text" id="username" name="username"
+                   placeholder="example@mail.ru или +7(123)456-78-90"
+                   required>
         </p>
 
         <p>
             <label for="password">Пароль:</label><br>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password"
+                   placeholder="Введите пароль"
+                   required>
         </p>
 
         <p>
@@ -49,11 +38,11 @@
     </form>
 
     <p>
-        <a th:href="@{/register}">Нет аккаунта? Зарегистрироваться</a><br>
-        <a th:href="@{/events}">Вернуться к событиям</a>
+        <a th:href="@{/register}">Нет аккаунта? Зарегистрироваться</a>
     </p>
 
-    <!-- Подключаем JS -->
-    <script th:src="@{/js/login.js}"></script>
-    </body>
+    <p>
+        <a th:href="@{/events}">← Вернуться к событиям</a>
+    </p>
+</body>
 </html>
