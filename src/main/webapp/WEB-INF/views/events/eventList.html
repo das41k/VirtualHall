@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список мероприятий</title>
+</head>
+<body>
+
+<h1>Мероприятия</h1>
+
+<!-- Форма фильтрации -->
+<div>
+    <form th:method="get" th:action="@{/events}">
+        <div>
+            <h3>Фильтр по дате:</h3>
+            <div>
+                <label>
+                    <input type="checkbox" name="dateFilters" value="today"
+                           th:checked="${selectedDateFilters != null && selectedDateFilters.contains('today')}">
+                    Сегодня
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" name="dateFilters" value="tomorrow"
+                           th:checked="${selectedDateFilters != null && selectedDateFilters.contains('tomorrow')}">
+                    Завтра
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" name="dateFilters" value="thisWeek"
+                           th:checked="${selectedDateFilters != null && selectedDateFilters.contains('thisWeek')}">
+                    На этой неделе
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" name="dateFilters" value="thisMonth"
+                           th:checked="${selectedDateFilters != null && selectedDateFilters.contains('thisMonth')}">
+                    В этом месяце
+                </label>
+            </div>
+        </div>
+
+        <div>
+            <h3>Тип мероприятия:</h3>
+            <div th:each="type : ${allEventTypes}">
+                <label>
+                    <input type="checkbox" name="eventTypeIds"
+                           th:value="${type.eventTypeId}"
+                           th:checked="${selectedEventTypeIds != null && selectedEventTypeIds.contains(type.eventTypeId)}">
+                    <span th:text="${type.name}"></span>
+                </label>
+            </div>
+        </div>
+
+        <div>
+            <button type="submit">Применить фильтры</button>
+            <a th:href="@{/events}">Сбросить фильтры</a>
+        </div>
+    </form>
+</div>
+
+<hr/>
+
+<!-- Результаты -->
+<div th:if="${events.empty}">
+    <p>Не было найдено мероприятий по данному запросу!</p>
+</div>
+
+<div th:if="not ${events.empty}">
+    <ul>
+        <!--/*@thymesVar id="event" type="com.example.VirtualHall.events.Event"*/-->
+        <li th:each="event : ${events}" th:object="${event}">
+            <div>
+                <strong>Название:</strong> <span th:text="*{title}"></span>
+            </div>
+            <div>
+                <strong>Описание:</strong> <span th:text="*{description}"></span>
+            </div>
+            <div th:if="*{introImagePath}">
+                <img th:src="@{*{introImagePath}}" th:alt="*{title}">
+            </div>
+            <div>
+                <strong>Дата:</strong>
+                <span th:text="${#temporals.format(event.dateTime, 'dd.MM.yyyy')}"></span>
+            </div>
+            <div>
+                <strong>Время:</strong>
+                <span th:text="${#temporals.format(event.dateTime, 'HH:mm')}"></span>
+            </div>
+            <div>
+                <strong>Тип мероприятия:</strong> <span th:text="*{eventType.name}"></span>
+            </div>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
