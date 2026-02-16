@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список мероприятий</title>
+</head>
+<body>
+
+    <div th:if="${events.empty}">
+        Не было найдено мероприятий по данному запросу!
+    </div>
+    <div th:if="not ${events.empty}">
+          <ul>
+              <!--/*@thymesVar id="event" type="com.example.VirtualHall.events.Event"*/-->
+              <li th:each="event : ${events}" th:object="${event}">
+                  Название <p th:text="*{title}"></p>
+                  Описание <p th:text="*{description}"></p>
+                  <img th:src="@{/*{introImagePath}}" th:alt="*{title}">
+                  Дата и время проведения: <p th:text="*{dateTime}"></p>
+                  Тип мероприятия <p th:text="*{eventType.name}"></p>
+              </li>
+          </ul>
+    </div>
+</body>
+</html>

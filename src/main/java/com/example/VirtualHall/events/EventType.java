@@ -1,9 +1,11 @@
 package com.example.VirtualHall.events;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "eventType")
+@Data
 public class EventType {
 
     @Id
