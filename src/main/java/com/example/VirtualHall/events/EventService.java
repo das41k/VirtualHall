@@ -1,5 +1,6 @@
 package com.example.VirtualHall.events;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -103,5 +105,10 @@ public class EventService {
         }
 
         return new LocalDateTime[]{start, end};
+    }
+
+    @Transactional
+    public Optional<Event> getEventById(Long id) {
+        return eventRepository.findById(id);
     }
 }

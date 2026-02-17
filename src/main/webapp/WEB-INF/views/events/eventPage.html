@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${event.title}"></title>
+</head>
+<body>
+    <!--/*@thymesVar id="event" type="com.example.VirtualHall.events.Event"*/-->
+    <div th:object="${event}">
+        <img th:src="@{*{introImagePath}}" th:alt="*{title}">
+        Мероприятие: <p th:text="*{title}"></p>
+        Описание: <p th:text="*{description}"></p>
+        Тип мероприятия: <p th:text="*{eventType.name}"></p>
+        <div>
+            <strong>Дата:</strong>
+            <span th:text="${#temporals.format(event.dateTime, 'dd.MM.yyyy')}"></span>
+        </div>
+        <div>
+            <strong>Время:</strong>
+            <span th:text="${#temporals.format(event.dateTime, 'HH:mm')}"></span>
+        </div>
+    </div>
+</body>
+</html>
