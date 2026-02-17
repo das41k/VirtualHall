@@ -1,0 +1,141 @@
+/* ============================================
+AUTH PAGES STYLES (login + register)
+============================================ */
+
+/* --- Layout --- */
+.auth-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* --- Auth Card --- */
+.auth-card {
+    background: var(--surface-color);
+    padding: 2.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.auth-card__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    color: var(--text-main);
+}
+
+.auth-card__subtitle {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+}
+
+/* --- Form Elements --- */
+.auth-form .form-group {
+    margin-bottom: 1.25rem;
+}
+
+.auth-form .form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+.auth-form .form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s;
+    background-color: #f9fafb;
+}
+
+.auth-form .form-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    background-color: #fff;
+}
+
+.auth-form .form-input--error {
+    border-color: var(--error-color);
+    background-color: #fef2f2;
+}
+
+.auth-form .form-input--error:focus {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.auth-form .field-error {
+    color: var(--error-color);
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.auth-form .form-hint {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    display: block;
+    margin-top: 0.25rem;
+}
+
+/* --- Form Row (для имени и фамилии в регистрации) --- */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* --- Submit Button --- */
+.auth-form .btn--primary {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* --- Footer --- */
+.auth-footer {
+    margin-top: 1.5rem;
+    text-align: center;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 1.5rem;
+}
+
+/* --- Animation --- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Mobile Adjustments --- */
+@media (max-width: 640px) {
+    .auth-content {
+        padding: 1rem;
+    }
+
+    .auth-card {
+        padding: 1.5rem;
+        box-shadow: none;
+        background: transparent;
+        border: none;
+    }
+
+    .auth-card__title {
+        font-size: 1.75rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
