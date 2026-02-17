@@ -2,99 +2,149 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Список мероприятий</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мероприятия</title>
+
+    <!-- Глобальные стили (шапка, бургер, кнопки) -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!-- Стили для мероприятий -->
+    <link rel="stylesheet" th:href="@{/css/events.css}">
 </head>
 <body>
 
-<h1>Мероприятия</h1>
+<!-- Подключаем фрагмент шапки -->
+<div th:replace="~{fragments/header :: menu-overlay}"></div>
+<header th:replace="~{fragments/header :: header}"></header>
 
-<!-- Форма фильтрации -->
-<div>
-    <form th:method="get" th:action="@{/events}">
-        <div>
-            <h3>Фильтр по дате:</h3>
-            <div>
-                <label>
-                    <input type="checkbox" name="dateFilters" value="today"
-                           th:checked="${selectedDateFilters != null && selectedDateFilters.contains('today')}">
-                    Сегодня
-                </label>
+<!-- Контент страницы -->
+<main class="events-content">
+
+    <!-- Заголовок страницы -->
+    <div class="page-header" style="margin-bottom: 2rem;">
+        <h1 style="font-size: 2rem; font-weight: 700; color: var(--text-main);">
+            📅 Мероприятия
+        </h1>
+        <p style="color: var(--text-secondary); margin-top: 0.5rem;">
+            Найдите событие по душе
+        </p>
+    </div>
+
+    <!-- Форма фильтрации -->
+    <div class="events-filters">
+        <h2 class="events-filters__title">Фильтры</h2>
+
+        <form th:method="get" th:action="@{/events}" class="filters-form">
+            <div class="filters-grid">
+                <!-- Фильтр по дате -->
+                <div class="filter-group">
+                    <h3 class="filter-group__title">🗓️ Дата проведения</h3>
+
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" name="dateFilters" value="today"
+                               th:checked="${selectedDateFilters != null && selectedDateFilters.contains('today')}">
+                        <span>Сегодня</span>
+                    </label>
+
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" name="dateFilters" value="tomorrow"
+                               th:checked="${selectedDateFilters != null && selectedDateFilters.contains('tomorrow')}">
+                        <span>Завтра</span>
+                    </label>
+
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" name="dateFilters" value="thisWeek"
+                               th:checked="${selectedDateFilters != null && selectedDateFilters.contains('thisWeek')}">
+                        <span>На этой неделе</span>
+                    </label>
+
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" name="dateFilters" value="thisMonth"
+                               th:checked="${selectedDateFilters != null && selectedDateFilters.contains('thisMonth')}">
+                        <span>В этом месяце</span>
+                    </label>
+                </div>
+
+                <!-- Фильтр по типу -->
+                <div class="filter-group">
+                    <h3 class="filter-group__title">🎯 Тип мероприятия</h3>
+
+                    <div th:each="type : ${allEventTypes}">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" name="eventTypeIds"
+                                   th:value="${type.eventTypeId}"
+                                   th:checked="${selectedEventTypeIds != null && selectedEventTypeIds.contains(type.eventTypeId)}">
+                            <span th:text="${type.name}"></span>
+                        </label>
+                    </div>
+                </div>
             </div>
-            <div>
-                <label>
-                    <input type="checkbox" name="dateFilters" value="tomorrow"
-                           th:checked="${selectedDateFilters != null && selectedDateFilters.contains('tomorrow')}">
-                    Завтра
-                </label>
+
+            <!-- Кнопки действий -->
+            <div class="filters-actions">
+                <button type="submit" class="btn btn--primary">
+                    🔍 Применить фильтры
+                </button>
+                <a th:href="@{/events}" class="btn btn--link" style="border: 1px solid #d1d5db;">
+                    ↻ Сбросить фильтры
+                </a>
             </div>
-            <div>
-                <label>
-                    <input type="checkbox" name="dateFilters" value="thisWeek"
-                           th:checked="${selectedDateFilters != null && selectedDateFilters.contains('thisWeek')}">
-                    На этой неделе
-                </label>
-            </div>
-            <div>
-                <label>
-                    <input type="checkbox" name="dateFilters" value="thisMonth"
-                           th:checked="${selectedDateFilters != null && selectedDateFilters.contains('thisMonth')}">
-                    В этом месяце
-                </label>
-            </div>
-        </div>
+        </form>
+    </div>
 
-        <div>
-            <h3>Тип мероприятия:</h3>
-            <div th:each="type : ${allEventTypes}">
-                <label>
-                    <input type="checkbox" name="eventTypeIds"
-                           th:value="${type.eventTypeId}"
-                           th:checked="${selectedEventTypeIds != null && selectedEventTypeIds.contains(type.eventTypeId)}">
-                    <span th:text="${type.name}"></span>
-                </label>
-            </div>
-        </div>
+    <!-- Результаты поиска -->
+    <div th:if="${events.empty}" class="events-empty">
+        <div class="events-empty__icon">🔍</div>
+        <h3 class="events-empty__title">Ничего не найдено</h3>
+        <p class="events-empty__text">
+            Попробуйте изменить параметры фильтра или сбросить их
+        </p>
+        <a th:href="@{/events}" class="btn btn--primary">Показать все мероприятия</a>
+    </div>
 
-        <div>
-            <button type="submit">Применить фильтры</button>
-            <a th:href="@{/events}">Сбросить фильтры</a>
-        </div>
-    </form>
-</div>
-
-<hr/>
-
-<!-- Результаты -->
-<div th:if="${events.empty}">
-    <p>Не было найдено мероприятий по данному запросу!</p>
-</div>
-
-<div th:if="not ${events.empty}">
-    <ul>
+    <!-- Список мероприятий -->
+    <div th:if="not ${events.empty}" class="events-grid">
         <!--/*@thymesVar id="event" type="com.example.VirtualHall.events.Event"*/-->
-        <li th:each="event : ${events}" th:object="${event}">
-            <div>
-                <strong>Название:</strong> <span th:text="*{title}"></span>
-            </div>
-            <div>
-                <strong>Описание:</strong> <span th:text="*{description}"></span>
-            </div>
+        <div th:each="event : ${events}" th:object="${event}" class="event-card">
+            <!-- Изображение -->
             <div th:if="*{introImagePath}">
-                <img th:src="@{*{introImagePath}}" th:alt="*{title}">
+                <img th:src="@{*{introImagePath}}" th:alt="*{title}" class="event-card__image">
             </div>
-            <div>
-                <strong>Дата:</strong>
-                <span th:text="${#temporals.format(event.dateTime, 'dd.MM.yyyy')}"></span>
+            <div th:unless="*{introImagePath}" class="event-card__image event-card__image--placeholder">
+                🎉
             </div>
-            <div>
-                <strong>Время:</strong>
-                <span th:text="${#temporals.format(event.dateTime, 'HH:mm')}"></span>
+
+            <!-- Контент карточки -->
+            <div class="event-card__content">
+                <!-- Тип мероприятия -->
+                <span class="event-card__type" th:text="*{eventType.name}"></span>
+
+                <!-- Название -->
+                <h3 class="event-card__title" th:text="*{title}"></h3>
+
+                <!-- Описание -->
+                <p class="event-card__description" th:text="*{description}"></p>
+
+                <!-- Дата и время -->
+                <div class="event-card__datetime">
+                        <span class="event-card__date"
+                              th:text="${#temporals.format(event.dateTime, 'dd.MM.yyyy')}"></span>
+                    <span class="event-card__time"
+                          th:text="${#temporals.format(event.dateTime, 'HH:mm')}"></span>
+                </div>
             </div>
-            <div>
-                <strong>Тип мероприятия:</strong> <span th:text="*{eventType.name}"></span>
+
+            <!-- Действия -->
+            <div class="event-card__actions">
+                <a th:href="@{/events/{id}(id=*{eventId})}" class="btn btn--primary">
+                    Подробнее
+                </a>
             </div>
-        </li>
-    </ul>
-</div>
+        </div>
+    </div>
+
+</main>
+
+<!-- Подключение JS -->
+<script th:src="@{/js/burger.js}" defer></script>
 </body>
 </html>
