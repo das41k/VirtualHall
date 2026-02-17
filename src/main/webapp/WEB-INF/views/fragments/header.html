@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Затемнение фона для мобильного меню -->
+<div th:fragment="menu-overlay" class="menu-overlay" id="menuOverlay"></div>
+
+<!-- Шапка сайта -->
+<header th:fragment="header" class="site-header">
+    <a th:href="@{/}" class="header__logo">Виртуальный зрительный зал</a>
+
+    <button class="burger-btn" id="burgerBtn" aria-label="Меню">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <nav class="header__nav" id="headerNav">
+        <a th:href="@{/events}" class="nav-link">Мероприятия</a>
+        <a th:href="@{/profile}" class="nav-link">Личный кабинет</a>
+        <a th:href="@{/login}" class="nav-link">Вход</a>
+    </nav>
+</header>
+
+</body>
+</html>

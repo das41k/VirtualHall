@@ -2,67 +2,99 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Регистрация</title>
+
+    <!-- Глобальные стили (шапка, бургер, кнопки, инпуты) -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!-- Стили для страниц авторизации (login + register) -->
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
 </head>
 <body>
-    <h2>Заполните форму для регистрации</h2>
 
-    <!--/*@thymesVar id="person" type="com.example.VirtualHall.person.Person"*/-->
-    <form th:action="@{/process-register}" th:method="POST" th:object="${person}">
-        <div>
-            <label for="lastName">Фамилия:</label>
-            <input type="text" id="lastName" th:field="*{lastName}"
-                   th:errorclass="field-error" placeholder="Введите фамилию">
-            <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Ошибка фамилии</div>
+<!-- Подключаем фрагмент шапки -->
+<div th:replace="~{fragments/header :: menu-overlay}"></div>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<!-- Контент страницы -->
+<main class="auth-content">
+    <div class="auth-card">
+        <h1 class="auth-card__title">Регистрация</h1>
+        <p class="auth-card__subtitle">Заполните форму для создания аккаунта</p>
+
+        <!--/*@thymesVar id="person" type="com.example.VirtualHall.person.Person"*/-->
+        <form th:action="@{/process-register}" th:method="POST" th:object="${person}" class="auth-form">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="lastName" class="form-label">Фамилия *</label>
+                    <input type="text" id="lastName" th:field="*{lastName}"
+                           th:errorclass="form-input--error" class="form-input"
+                           placeholder="Иванов">
+                    <div th:if="${#fields.hasErrors('lastName')}"
+                         th:errors="*{lastName}" class="field-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="firstName" class="form-label">Имя *</label>
+                    <input type="text" id="firstName" th:field="*{firstName}"
+                           th:errorclass="form-input--error" class="form-input"
+                           placeholder="Иван">
+                    <div th:if="${#fields.hasErrors('firstName')}"
+                         th:errors="*{firstName}" class="field-error"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="middleName" class="form-label">Отчество</label>
+                <input type="text" id="middleName" th:field="*{middleName}"
+                       th:errorclass="form-input--error" class="form-input"
+                       placeholder="Иванович (необязательно)">
+                <div th:if="${#fields.hasErrors('middleName')}"
+                     th:errors="*{middleName}" class="field-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone" class="form-label">Телефон *</label>
+                <input type="tel" id="phone" th:field="*{phone}"
+                       th:errorclass="form-input--error" class="form-input"
+                       placeholder="+7(999)999-99-99">
+                <div th:if="${#fields.hasErrors('phone')}"
+                     th:errors="*{phone}" class="field-error"></div>
+                <small class="form-hint">Формат: +7(123)456-78-90</small>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">Email *</label>
+                <input type="email" id="email" th:field="*{email}"
+                       th:errorclass="form-input--error" class="form-input"
+                       placeholder="example@mail.com">
+                <div th:if="${#fields.hasErrors('email')}"
+                     th:errors="*{email}" class="field-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Пароль *</label>
+                <input type="password" id="password" th:field="*{password}"
+                       th:errorclass="form-input--error" class="form-input"
+                       placeholder="••••••••">
+                <div th:if="${#fields.hasErrors('password')}"
+                     th:errors="*{password}" class="field-error"></div>
+                <small class="form-hint">Минимум 8 символов: 1 цифра, 1 заглавная, 1 строчная, 1 спецсимвол</small>
+            </div>
+
+            <button type="submit" class="btn btn--primary">Зарегистрироваться</button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Уже есть аккаунт?
+                <a th:href="@{/login}" class="btn btn--link">Войти</a>
+            </p>
         </div>
-        <br/>
+    </div>
+</main>
 
-        <div>
-            <label for="firstName">Имя:</label>
-            <input type="text" id="firstName" th:field="*{firstName}"
-                   th:errorclass="field-error" placeholder="Введите имя">
-            <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Ошибка имени</div>
-        </div>
-        <br/>
-
-        <div>
-            <label for="middleName">Отчество:</label>
-            <input type="text" id="middleName" th:field="*{middleName}"
-                   th:errorclass="field-error" placeholder="Введите отчество (необязательно)">
-            <div th:if="${#fields.hasErrors('middleName')}" th:errors="*{middleName}">Ошибка отчества</div>
-        </div>
-        <br/>
-
-        <div>
-            <label for="phone">Телефон:</label>
-            <input type="tel" id="phone" th:field="*{phone}"
-                   th:errorclass="field-error" placeholder="+7(999)999-99-99">
-            <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Ошибка телефона</div>
-            <small>Формат: +7(123)456-78-90 или 8(123)4567890</small>
-        </div>
-        <br/>
-
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" th:field="*{email}"
-                   th:errorclass="field-error" placeholder="example@mail.com">
-            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Ошибка email</div>
-        </div>
-        <br/>
-
-        <!-- Поле для пароля -->
-        <div>
-            <label for="password">Пароль:</label>
-            <input type="password" id="password" th:field="*{password}"
-                   th:errorclass="field-error" placeholder="Введите пароль">
-            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Ошибка пароля</div>
-            <small>Минимум 8 символов: 1 цифра, 1 заглавная, 1 строчная, 1 спецсимвол (@#$%^&+=!)</small>
-        </div>
-        <br/>
-
-        <input type="submit" value="Зарегистрироваться">
-    </form>
-
-    <p>Уже есть аккаунт? <a th:href="@{/login}">Войти</a></p>
+<!-- Подключение JS -->
+<script th:src="@{/js/burger.js}" defer></script>
 </body>
 </html>
